@@ -1,10 +1,3 @@
-//pseudocode:
-// I have a library, and some functions. The functions are going to read through the library.
-// To read through the library I use certain types of loops - the ones that work with objects, since the library is an object.
-// To loop through objects you need to use a for...in loop.
-// I am using a lot of built in higher order functions to sort through the library, like Object.map.
-
-
 const library = {
   tracks:
   { t01: { id: "t01",
@@ -32,23 +25,23 @@ const library = {
   }
 };
 
-// /////////////////////////////
-// // FUNCTIONS TO IMPLEMENT:
-// /////////////////////////////
+/////////////////////////////
+// FUNCTIONS TO IMPLEMENT:
+/////////////////////////////
 
-// // prints a list of all playlists, in the form:
-// // p01: Coding Music - 2 tracks
-// // p02: Other Playlist - 1 tracks
-// const printPlaylists = function() {
-
-// };
-
+// prints a list of all playlists, in the form:
+// p01: Coding Music - 2 tracks
+// p02: Other Playlist - 1 tracks
+const printPlaylists = function(array) {
+  return Object.values(array.playlists).map(callback => (`${callback.id}: ${callback.name} - ${callback.tracks.length} tracks`));
+};
+console.log(printPlaylists(library));
 
 // prints a list of all tracks, using the following format:
 // id:, name:, "by", artist:, "(album)"
 // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // t02: Model View Controller by James Dempsey (WWDC 2003)
-// t03: Four Thirty-Three by John Cage (Woodstock 1952)
+
 const printTracks = function(array) {
   return Object.values(array.tracks).map(callback => (`${callback.id}: ${callback.name} by ${callback.artist} (${callback.album})`)
   );
@@ -59,10 +52,18 @@ console.log(printTracks(library));
 // // p01: Coding Music - 2 tracks
 // // t01: Code Monkey by Jonathan Coulton (Thing a Week Three)
 // // t02: Model View Controller by James Dempsey (WWDC 2003)
-// const printPlaylist = function(playlistId) {
 
-// };
+const printPlaylist = function(array, playlistId) {
+  const playlist = array.playlists[playlistId];
+  const trackInfo = playlist.tracks.map(callback => {
+    const track = array.tracks[callback];
+    return (`${track.id}: ${track.name}`);
+  });
 
+  console.log(`${playlist.name} - ${playlist.tracks.length} tracks:`, trackInfo);
+};
+printPlaylist(library, "p01");
+printPlaylist(library, "p02");
 
 // // adds an existing track to an existing playlist
 // const addTrackToPlaylist = function(trackId, playlistId) {
