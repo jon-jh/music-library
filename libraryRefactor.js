@@ -34,18 +34,18 @@ const library = {
     }
     
   },
-  printPlaylists : function() {
+  printPlaylists: function() {
     const playlistInfo = Object.values(this.playlists).map(callback => (`${callback.id}: ${callback.name} - ${callback.tracks.length} tracks`));
     console.log(playlistInfo);
     return playlistInfo;
   },
-  printTracks : function() {
+  printTracks: function() {
     tracksInfo = Object.values(this.tracks).map(callback => (`${callback.id}: ${callback.name} by ${callback.artist} (${callback.album})`)
     );
     console.log(tracksInfo);
     return tracksInfo;
   },
-  printPlaylist : function(obj, playlistId) {
+  printPlaylist: function(obj, playlistId) {
     const playlist = this.playlists[playlistId];
     const trackInfo = playlist.tracks.map(callback => {
       const track = this.tracks[callback];
@@ -54,11 +54,11 @@ const library = {
 
     console.log(`${playlist.name} - ${playlist.tracks.length} tracks:`, trackInfo);
   },
-  addTrackToPlaylist : function(obj, trackId, playlistId) {
+  addTrackToPlaylist: function(obj, trackId, playlistId) {
     this.playlists[playlistId].tracks.push(trackId);
     console.log(`Added track ${trackId} - ${this.tracks[trackId].name} to playlist ${playlistId}`);
   },
-  addTrack :function(obj, name, artist, album) {
+  addTrack: function(obj, name, artist, album) {
     const trackId = generateUid();
     const newTrack = {
       id: trackId,
@@ -69,7 +69,7 @@ const library = {
     this.tracks[trackId] = newTrack;
     console.log(`New track: ${name} by ${artist} (${album})`);
   },
-  addPlaylist : function(obj, name) {
+  addPlaylist: function(obj, name) {
     const playlistId = generateUid();
     const newPlaylist = {
       id: playlistId,
@@ -78,13 +78,33 @@ const library = {
     };
     this.playlists[playlistId] = newPlaylist;
     printPlaylists(library);
+  },
+  searchTracks: function(query) {
+    // Convert the query to lowercase for case-insensitive search
+    const lowerCaseQuery = query.toLowerCase();
+    // Filter tracks that match the query in name, artist, or album
+    const matchingTracks = Object.values(this.tracks).filter(track => {
+      return track.name.toLowerCase().includes(lowerCaseQuery) ||
+        track.artist.toLowerCase().includes(lowerCaseQuery) ||
+        track.album.toLowerCase().includes(lowerCaseQuery);
+    });
+
+    // Print the matching tracks
+    matchingTracks.forEach(track => {
+      console.log(`${track.id}: ${track.name} by ${track.artist} (${track.album})`);
+    });
+    return matchingTracks;
   }
 };
+
+
 const generateUid = function() {
   return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); // This one had to stay outside the function for it to work.
 };
 
-library.printPlaylist(this, "p01");
-library.addTrackToPlaylist(this, "t03", "p01");
-library.addTrack(this, "The ABC's", "50 cent", "Songs 4 Kids");
-library.printTracks();
+// library.printPlaylist(this, "p01");
+// library.addTrackToPlaylist(this, "t03", "p01");
+// library.addTrack(this, "The ABC's", "50 cent", "Songs 4 Kids");
+// library.printTracks();
+
+library.searchTracks('jon')
